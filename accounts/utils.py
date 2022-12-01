@@ -34,7 +34,7 @@ def verify_entitlement(customer: Customer) -> bool:
     entitlements = entitlement.get("Entitlements", [])
     return any(
         [
-            i["ExpirationDate"] > timezone.now() + datetime.timedelta(days=400)
+            i["ExpirationDate"] > timezone.now() 
             for i in entitlements
         ]
     )
@@ -53,7 +53,7 @@ def generate_bill(customers: QuerySet[Customer]):
         data = {
             "Timestamp": timestamp,
             "CustomerIdentifier": customer.customerID,
-            "Dimension": "platform",
+            "Dimension": settings.AWS_MARKETPLACE_PRODUCT_DIMENSION,
             "Quantity": 1,
         }
         print(data)

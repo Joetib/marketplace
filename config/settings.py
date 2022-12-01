@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "debug_toolbar",
     "import_export",
+    "django_crontab",
     # Local
     "accounts",
     "pages",
@@ -231,3 +232,8 @@ AWS_MARKETPLACE_PRODUCT_KEY = env("AWS_MARKETPLACE_PRODUCT_KEY")
 AWS_MARKETPLACE_PRODUCT_DIMENSION = env("AWS_MARKETPLACE_PRODUCT_DIMENSION")
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
+
+CRONJOBS = [
+    # run computation every hour
+    ("0 * * * *", 'django.core.management.call_command', ['charge'])
+]

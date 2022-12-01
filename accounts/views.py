@@ -20,7 +20,7 @@ def receive_marketplace_subscription(request: HttpRequest):
     registration_token: str = data.get("x-amzn-marketplace-token", "")
     if registration_token:
         marketplace_client = boto3.client('meteringmarketplace')
-        customer_data: dict = marketplace_client.resolve_customer(registration_token)
+        customer_data: dict = marketplace_client.resolve_customer(RegistrationToken=registration_token)
         print(customer_data)
         product_code: str = customer_data["ProductCode"]
         customerID: str = customer_data["CustomerIdentifier"]
