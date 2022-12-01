@@ -1,0 +1,23 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: k8s-jshop
+spec:
+  replicas: 5
+  selector:
+    matchLabels:
+      app: k8s-jshop
+  template:
+    metadata:
+      labels:
+        app: k8s-jshop
+    spec:
+      containers:
+      - name: k8s-jshop
+        image: joetib/webapp
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "250m"
+        ports:
+        - containerPort: 80

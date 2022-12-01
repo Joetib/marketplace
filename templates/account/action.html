@@ -1,0 +1,15 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Log in{% endblock %}
+
+{% block content %}
+<div class="container py-5 my-5" style="max-width: 650px;">
+
+  <h2>Action</h2>
+  <div class="my-5 p-3 bg-light">
+        Let us perform the requisite action. Each action will cost you a unit charge on aws
+  </div>
+  <a class="btn btn-lg btn-primary" href="{% url 'action' %}">Take Action</a>
+</div>
+{% endblock content %}

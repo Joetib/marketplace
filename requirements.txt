@@ -1,0 +1,14 @@
+asgiref
+black
+crispy-bootstrap5
+Django
+django-allauth
+django-crispy-forms
+django-debug-toolbar
+django-environ
+django-import-export
+gunicorn
+Pillow
+psycopg2-binary
+requests
+whitenoise
