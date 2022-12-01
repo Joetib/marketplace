@@ -10,10 +10,11 @@ import urllib.parse as urlparse
 from .models import CustomUser, Customer, Activity
 from django.contrib import messages
 from . import forms
+from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
-
+@csrf_exempt
 def receive_marketplace_subscription(request: HttpRequest):
     data: dict = request.POST
     registration_token: str = data.get("x-amzn-marketplace-token", "")
