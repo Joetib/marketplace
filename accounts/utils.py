@@ -49,12 +49,11 @@ def generate_bill(customers: QuerySet[Customer]):
         )
         total_charge = sum(activities.values_list("number", flat=True))
         print("Customer: ", customer, " Charge: ", total_charge)
-        time.sleep(1)
         data = {
             "Timestamp": timestamp,
             "CustomerIdentifier": customer.customerID,
             "Dimension": settings.AWS_MARKETPLACE_PRODUCT_DIMENSION,
-            "Quantity": 1,
+            "Quantity": total_charge,
         }
         print(data)
         usageRecords.append(data)
