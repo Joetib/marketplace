@@ -12,8 +12,6 @@ env = environ.Env(
     ALLOWED_HOSTS=(list, ["*"]),
     DB_PORT=(int, 3306),
     DB_HOST=(str, "localhost"),
-    EMAIL_PORT=(int, 587),
-    EMAIL_USE_TLS=(bool, True),
     MEDIA_ROOT=(str, str(BASE_DIR.joinpath("media"))),
     STATIC_ROOT=(str, str(BASE_DIR.joinpath("static"))),
     USE_POSTGRES=(bool, False),
@@ -233,21 +231,3 @@ AWS_MARKETPLACE_PRODUCT_KEY = env("AWS_MARKETPLACE_PRODUCT_KEY")
 AWS_MARKETPLACE_PRODUCT_DIMENSION = env("AWS_MARKETPLACE_PRODUCT_DIMENSION")
 
 DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
-
-if DEBUG:
-    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
-else:
-    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
-EMAIL_HOST = env("EMAIL_HOST")
-EMAIL_PORT = env("EMAIL_PORT")
-EMAIL_HOST_USER = env("EMAIL_HOST_USER")
-EMAIL_USE_TLS = env("EMAIL_USE_TLS")
-EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
-DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL", default=EMAIL_HOST_USER)
-
-SMS_API_KEY = env("SMS_API_KEY")
-SMS_SENDER_ID = env("SMS_SENDER_ID")
-ENABLE_MESSAGING = env("ENABLE_MESSAGING")
-PAYSTACK_PRIVATE_KEY = env("PAYSTACK_SECRET_KEY")
-PAYSTACK_PUBLIC_KEY = env("PAYSTACK_PUBLIC_KEY")
