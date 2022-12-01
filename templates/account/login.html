@@ -12,6 +12,31 @@
     {{ form|crispy }}
     <button class="btn btn-success" type="submit">Log in</button>
   </form>
-  <a href="{% url 'account_signup' %}">Or Signup here</a>
+  {% if customer_pk %}
+  <a href="{% url 'account_signup' customer_pk=customer_pk %}">Or Signup here</a>
+  {% else %}
+  <a href="{% url 'account_signup'%}">Or Signup here</a>
+  {% endif %}
 </div>
+
+
+
+<section class="py-5">
+  <hr>
+  <div class="container p-4" style="max-width: 500px;">
+    <div class="card px-3 py-4">
+      <div class="text-center pb-4">
+
+        <h6 class="p-0">Or Enter Registration Token from marketplace</h6>
+        <p class="muted">(Just for testing)</p>
+      </div>
+      
+      <form method="post" action="{% url 'receive_marketplace_subscription' %}">
+        <input name="x-amzn-marketplace-token" class="form-control" placeholder="amazon token" type="text">
+        <div class="p-2"></div>
+        <button class="btn btn-primary w-100">Submit</button>
+      </form>
+    </div>
+  </div>
+</section>
 {% endblock content %}

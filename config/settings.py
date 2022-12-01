@@ -15,6 +15,7 @@ env = environ.Env(
     MEDIA_ROOT=(str, str(BASE_DIR.joinpath("media"))),
     STATIC_ROOT=(str, str(BASE_DIR.joinpath("static"))),
     USE_POSTGRES=(bool, False),
+    CSRF_TRUSTED_ORIGINS=(list, ['http://*.127.0.0.1','http://*.127.0.0.1',])
 )
 
 try:
@@ -237,3 +238,4 @@ CRONJOBS = [
     # run computation every hour
     ("0 * * * *", 'django.core.management.call_command', ['charge'])
 ]
+CSRF_TRUSTED_ORIGINS = env('CSRF_TRUSTED_ORIGINS') 

@@ -18,21 +18,25 @@ from django.views.decorators.csrf import csrf_exempt
 def receive_marketplace_subscription(request: HttpRequest):
     data: dict = request.POST
     registration_token: str = data.get("x-amzn-marketplace-token", "")
+    print(registration_token)
     if registration_token:
-        marketplace_client = boto3.client('meteringmarketplace')
-        customer_data: dict = marketplace_client.resolve_customer(RegistrationToken=registration_token)
-        print(customer_data)
-        product_code: str = customer_data["ProductCode"]
-        customerID: str = customer_data["CustomerIdentifier"]
-        customer_aws_account_id: str = customer_data["CustomerAWSAccountId"]
-        customer: Customer = Customer.objects.get_or_create(
-            product_code=product_code,
-            customerID=customerID,
-            customer_aws_account_id=customer_aws_account_id,
-        )[0]
-
-        return redirect(reverse("account_login", kwargs={"customer_pk": customer.pk}))
-    raise Http404(f"Account setup failed for registration token: {registration_token}")
+        try:
+            marketplace_client = boto3.client('meteringmarketplace')
+            customer_data: dict = marketplace_client.resolve_customer(RegistrationToken=registration_token)
+            print(customer_data)
+            product_code: str = customer_data["ProductCode"]
+            customerID: str = customer_data["CustomerIdentifier"]
+            customer_aws_account_id: str = customer_data["CustomerAWSAccountId"]
+            customer: Customer = Customer.objects.get_or_create(
+                product_code=product_code,
+                customerID=customerID,
+                customer_aws_account_id=customer_aws_account_id,
+            )[0]
+            return redirect(reverse("account_login", kwargs={"customer_pk": customer.pk}))
+        except Exception as e:
+            messages.error(request, str(e))
+    messages.error(request, f"Account setup failed for registration token: {registration_token}")
+    return redirect("account_login")
 
 
 def login_view(request: HttpRequest, customer_pk: Optional[int] = None):
@@ -60,7 +64,7 @@ def login_view(request: HttpRequest, customer_pk: Optional[int] = None):
     return render(
         request,
         "account/login.html",
-        context={"form": login_form, "customer": customer_pk},
+        context={"form": login_form, "customer_pk": customer_pk},
     )
 
 
@@ -77,6 +81,7 @@ def register_view(request: HttpRequest, customer_pk: Optional[int] = None):
             customer.user = user
         
             user.set_password(cd["password"])
+            user.save()
             customer.save()
             return redirect(
                 reverse("account_login", kwargs={"customer_pk": customer.pk})
@@ -87,7 +92,7 @@ def register_view(request: HttpRequest, customer_pk: Optional[int] = None):
         register_form = forms.RegisterForm()
     return render(
         request,
-        "account/login.html",
+        "account/signup.html",
         context={"form": register_form, "customer": customer},
     )
 @login_required
