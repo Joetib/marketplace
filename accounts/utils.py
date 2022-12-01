@@ -70,8 +70,8 @@ def send_charges(usageRecords: list[dict]):
 
     marketplaceClient = boto3.client("meteringmarketplace")
 
-    response = marketplaceClient.meter_usage(
-        **usageRecords[0], ProductCode=settings.AWS_MARKETPLACE_PRODUCT_KEY
+    response = marketplaceClient.batch_meter_usage(
+        UsageRecords=usageRecords, ProductCode=settings.AWS_MARKETPLACE_PRODUCT_KEY
     )
     print(response)
 
