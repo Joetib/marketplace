@@ -18,3 +18,5 @@ venv/
 env/
 venv/*
 env/*
+credentials.json
+token.json
