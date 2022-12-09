@@ -4,12 +4,57 @@
 {% block title %}Log in{% endblock %}
 
 {% block content %}
-<div class="container py-5 my-5" style="max-width: 650px;">
+<div class="container py-5 my-5" style="max-width: 700px;">
 
-  <h2>Action</h2>
-  <div class="my-5 p-3 bg-light">
-        Let us perform the requisite action. Each action will cost you a unit charge on aws
+  <h2>Welcome</h2>
+  <div class="my-3 p-3 bg-light">
+       Thank you for registering with EdgeIQ.
+       Please find below your registration details.
+
+      
   </div>
-  <a class="btn btn-lg btn-primary" href="{% url 'action' %}">Take Action</a>
+  <div class="py-3">
+    <div class="row py-3">
+      <div class="col-6 col-md-4 px-2 py-2">
+        <div class="bg-white p-2 rounded h-100">
+          <small>Customer ID</small>
+          <p class="m-0 pt-2 text-wrap">{{ customer.customerID }}</p>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 px-2 py-2">
+        <div class="bg-white p-2 rounded h-100">
+          <small>AWS Account ID</small>
+          <p class="m-0 pt-2 text-wrap">{{ customer.customer_aws_account_id }}</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 px-2 py-2">
+        <div class="bg-white p-2 rounded h-100">
+          <small>Product Code</small>
+          <p class="m-0 pt-2 text-wrap">{{ customer.product_code }}</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 px-2 py-2">
+        <div class="bg-white p-2 rounded h-100">
+          <small>First Name</small>
+          <p class="m-0 pt-2 text-wrap">{{ customer.user.first_name }}</p>
+        </div>
+      </div>
+      <div class="col-6 col-md-4 px-2 py-2">
+        <div class="bg-white p-2 rounded h-100">
+          <small>Last Name</small>
+          <p class="m-0 pt-2 text-wrap">{{ customer.user.last_name }}</p>
+        </div>
+      </div>
+
+      <div class="col-6 col-md-4 px-2 py-2">
+        <div class="bg-white p-2 rounded h-100">
+          <small>Email</small>
+          <p class="m-0 pt-2 text-wrap">{{ customer.user.email }}</p>
+        </div>
+      </div>
+
+     </div>
+  </div>
 </div>
 {% endblock content %}

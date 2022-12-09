@@ -97,7 +97,9 @@ def register_view(request: HttpRequest, customer_pk: Optional[int] = None):
     )
 @login_required
 def dashboard(request: HttpRequest) -> HttpResponse:
-    return render(request, "account/action.html",)
+    return render(request, "account/action.html", {
+        'customer': request.user.subscriptions.first() if request.user.subscriptions.count() > 0 else None
+    })
 
 @login_required
 def action(request: HttpRequest) -> HttpResponse:

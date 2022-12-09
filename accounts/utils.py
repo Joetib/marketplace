@@ -7,17 +7,21 @@ from django.db.models.query import QuerySet
 from django.core.paginator import Paginator
 import time
 
+def update_customer_entitlement(customer: Customer):
+    entitlements = get_entitlement(customer)
+    if len(entitlements)== 0:
+        customer.value = 0
+        customer.dimension = ''
+    else:
+        entitlement = entitlements[-1]
+        customer.dimension = entitlement['Dimension']
+        value: dict = entitlement["Value"]
+        customer.value = list(value.values())[-1] if len(value.values()) > 0 else 0
+        customer.expiry_date = entitlement["ExpirationDate"]
+    customer.save()
 
-def verify_entitlement(customer: Customer) -> bool:
-    print("verifying")
+def get_entitlement(customer: Customer) -> list[dict]:
     marketplaceClient = boto3.client("marketplace-entitlement")
-
-    # Filter entitlements for a specific customerID
-    #
-    # productCode is supplied after the AWS Marketplace Ops team has published
-    # the product to limited
-    #
-    # customerID is obtained from the ResolveCustomer response
     entitlement = marketplaceClient.get_entitlements(
         **{
             "ProductCode": settings.AWS_MARKETPLACE_PRODUCT_KEY,
@@ -29,9 +33,20 @@ def verify_entitlement(customer: Customer) -> bool:
             "MaxResults": 25,
         }
     )
-    print("Entitlement: Got here")
-    print("Entitilement: \n\n", entitlement)
     entitlements = entitlement.get("Entitlements", [])
+    return entitlements
+
+def verify_entitlement(customer: Customer) -> bool:
+    print("verifying")
+    
+
+    # Filter entitlements for a specific customerID
+    #
+    # productCode is supplied after the AWS Marketplace Ops team has published
+    # the product to limited
+    #
+    # customerID is obtained from the ResolveCustomer response
+    entitlements = get_entitlement(customer=customer)
     return any(
         [
             i["ExpirationDate"] > timezone.now() 

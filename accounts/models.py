@@ -18,6 +18,10 @@ class Customer(models.Model):
     product_code = models.TextField(max_length=255, blank=False, null=False)
     customerID = models.TextField(max_length=255, blank=False, null=False)
     customer_aws_account_id = models.TextField(max_length=100, blank=False, null=False)
+    dimension = models.CharField(max_length=100, blank=True)
+    value = models.DecimalField(max_digits=12, decimal_places=2, default=1)
+    expiry_date = models.DateTimeField(blank=True, null=True)
+
 
     def __str__(self):
         return f"Customer: {self.customerID}"

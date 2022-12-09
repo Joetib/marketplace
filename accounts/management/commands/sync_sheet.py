@@ -7,6 +7,7 @@ from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
+from accounts.utils import update_customer_entitlement
 from django.db.models import Q
 import os
 from accounts.models import Customer
@@ -45,25 +46,38 @@ class Command(BaseCommand):
             with open("token.json", "w") as token:
                 token.write(creds.to_json())
         return creds
+    
+    def update_customers(self):
+        self.stdout.write(self.style.SUCCESS("Updating customer entitlements"))
+
+        for customer in Customer.objects.all():
+            update_customer_entitlement(customer)
+        self.stdout.write(self.style.SUCCESS("Completed Updating customer entitlements"))
 
     def upload(self, creds: Credentials):
         service = build('sheets', 'v4', credentials=creds)
         sheet = service.spreadsheets()
         data: list[list] = []
         for customer in Customer.objects.filter(~(Q(user=None))):
+            date = ''
+            if customer.expiry_date:
+                date = str(customer.expiry_date)
             data.append(
                 [
                     customer.customerID,
                     customer.customer_aws_account_id,
                     customer.product_code,
+                    customer.dimension,
+                    float(customer.value),
+                    date,
                     customer.user.first_name,
                     customer.user.last_name,
                     customer.user.email,
                 ]
             )
-        sheet.values().clear(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="A2:F").execute()
+        sheet.values().clear(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="A2:H").execute()
         sheet.values().append(
-            spreadsheetId=SAMPLE_SPREADSHEET_ID, range='A2:F2', valueInputOption='USER_ENTERED', body={'values': data}
+            spreadsheetId=SAMPLE_SPREADSHEET_ID, range='A2:H', valueInputOption='USER_ENTERED', body={'values': data}
         ).execute()
 
         
@@ -91,6 +105,7 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('Current Time: "%s"' % timezone.now()))
+        self.update_customers()
         creds: Credentials = self.authorize()
         self.upload(creds)
         
