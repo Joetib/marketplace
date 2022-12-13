@@ -14,6 +14,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
+
 @csrf_exempt
 def receive_marketplace_subscription(request: HttpRequest):
     data: dict = request.POST
@@ -21,8 +22,10 @@ def receive_marketplace_subscription(request: HttpRequest):
     print(registration_token)
     if registration_token:
         try:
-            marketplace_client = boto3.client('meteringmarketplace')
-            customer_data: dict = marketplace_client.resolve_customer(RegistrationToken=registration_token)
+            marketplace_client = boto3.client("meteringmarketplace")
+            customer_data: dict = marketplace_client.resolve_customer(
+                RegistrationToken=registration_token
+            )
             print(customer_data)
             product_code: str = customer_data["ProductCode"]
             customerID: str = customer_data["CustomerIdentifier"]
@@ -32,10 +35,14 @@ def receive_marketplace_subscription(request: HttpRequest):
                 customerID=customerID,
                 customer_aws_account_id=customer_aws_account_id,
             )[0]
-            return redirect(reverse("account_login", kwargs={"customer_pk": customer.pk}))
+            return redirect(
+                reverse("account_login", kwargs={"customer_pk": customer.pk})
+            )
         except Exception as e:
             messages.error(request, str(e))
-    messages.error(request, f"Account setup failed for registration token: {registration_token}")
+    messages.error(
+        request, f"Account setup failed for registration token: {registration_token}"
+    )
     return redirect("account_login")
 
 
@@ -50,9 +57,19 @@ def login_view(request: HttpRequest, customer_pk: Optional[int] = None):
             if user:
                 if customer_pk:
                     customer: Customer = get_object_or_404(Customer, pk=customer_pk)
-
-                    customer.user = user
-                    customer.save()
+                    if not customer.user or customer.user == user:
+                        customer.user = user
+                        customer.save()
+                    else:
+                        messages.error(
+                            request,
+                            "The specified customerID is already associated with a different user.",
+                        )
+                        return redirect(
+                            reverse(
+                                "account_login",
+                            )
+                        )
                 user.refresh_from_db()
 
                 login(request, user)
@@ -70,16 +87,23 @@ def login_view(request: HttpRequest, customer_pk: Optional[int] = None):
 
 def register_view(request: HttpRequest, customer_pk: Optional[int] = None):
     if not customer_pk:
-        messages.warning(request, "Please use the AWS portal to begin registration process")
+        messages.warning(
+            request, "Please use the AWS portal to begin registration process"
+        )
         return redirect("account_login")
     customer: Customer = get_object_or_404(Customer, pk=customer_pk)
+    if customer.user:
+        messages.error(
+            request, "This customer has already been registered. Please sign in"
+        )
+        return redirect(reverse("account_login", kwargs={"customer_pk": customer.pk}))
     if request.method == "POST":
         register_form = forms.RegisterForm(request.POST)
         if register_form.is_valid():
             cd = register_form.cleaned_data
             user: CustomUser = register_form.save()
             customer.user = user
-        
+
             user.set_password(cd["password"])
             user.save()
             customer.save()
@@ -95,11 +119,20 @@ def register_view(request: HttpRequest, customer_pk: Optional[int] = None):
         "account/signup.html",
         context={"form": register_form, "customer": customer},
     )
+
+
 @login_required
 def dashboard(request: HttpRequest) -> HttpResponse:
-    return render(request, "account/action.html", {
-        'customer': request.user.subscriptions.first() if request.user.subscriptions.count() > 0 else None
-    })
+    return render(
+        request,
+        "account/action.html",
+        {
+            "customer": request.user.subscriptions.first()
+            if request.user.subscriptions.count() > 0
+            else None
+        },
+    )
+
 
 @login_required
 def action(request: HttpRequest) -> HttpResponse:
@@ -108,7 +141,9 @@ def action(request: HttpRequest) -> HttpResponse:
         number: int = int(request.GET.get("number_of_times", 1))
 
         activity = Activity.objects.create(number=number, customer=customer)
-        messages.success(request, f"Action performed successfully. \n Number of times: {number}.")
+        messages.success(
+            request, f"Action performed successfully. \n Number of times: {number}."
+        )
     else:
         messages.error(request, f"You do not have a marketplace account associated.")
     return redirect("dashboard")

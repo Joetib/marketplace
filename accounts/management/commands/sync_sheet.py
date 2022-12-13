@@ -11,9 +11,9 @@ from accounts.utils import update_customer_entitlement
 from django.db.models import Q
 import os
 from accounts.models import Customer
-
+from django.conf import settings
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
-SAMPLE_SPREADSHEET_ID = "1DxlOpctqoIeeTdiLWb1np2BVnk3gyVnSoVRsHBqNthc"
+SPREADSHEET_ID =  settings.SPREADSHEET_ID 
 SAMPLE_RANGE_NAME = 'A2:F'
 
 
@@ -49,12 +49,12 @@ class Command(BaseCommand):
     
     def update_customers(self):
         self.stdout.write(self.style.SUCCESS("Updating customer entitlements"))
-
         for customer in Customer.objects.all():
             update_customer_entitlement(customer)
         self.stdout.write(self.style.SUCCESS("Completed Updating customer entitlements"))
 
     def upload(self, creds: Credentials):
+        self.stdout.write(self.style.SUCCESS("Start: Uploading spreadsheet content."))
         service = build('sheets', 'v4', credentials=creds)
         sheet = service.spreadsheets()
         data: list[list] = []
@@ -75,10 +75,11 @@ class Command(BaseCommand):
                     customer.user.email,
                 ]
             )
-        sheet.values().clear(spreadsheetId=SAMPLE_SPREADSHEET_ID, range="A2:H").execute()
+        sheet.values().clear(spreadsheetId=SPREADSHEET_ID, range="A2:H").execute()
         sheet.values().append(
-            spreadsheetId=SAMPLE_SPREADSHEET_ID, range='A2:H', valueInputOption='USER_ENTERED', body={'values': data}
+            spreadsheetId=SPREADSHEET_ID, range='A2:H', valueInputOption='USER_ENTERED', body={'values': data}
         ).execute()
+        self.stdout.write(self.style.SUCCESS("Done: Uploading spreadsheet content."))
 
         
 
@@ -88,7 +89,7 @@ class Command(BaseCommand):
 
             # Call the Sheets API
             sheet = service.spreadsheets()
-            result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
+            result = sheet.values().get(spreadsheetId=SPREADSHEET_ID,
                                         range=SAMPLE_RANGE_NAME).execute()
             values = result.get('values', [])
 
@@ -109,5 +110,5 @@ class Command(BaseCommand):
         creds: Credentials = self.authorize()
         self.upload(creds)
         
-        self.stdout.write(self.style.SUCCESS("Ended Charges processing."))
+        self.stdout.write(self.style.SUCCESS("Ended SpreadSheet processing."))
         self.stdout.write(self.style.SUCCESS('Current Time: "%s"' % timezone.now()))
