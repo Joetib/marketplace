@@ -62,8 +62,13 @@ def register_view(request: HttpRequest, customer_id: Optional[str] = None):
         register_form = forms.RegisterForm(request.POST, instance=customer)
         if register_form.is_valid():
             cd = register_form.cleaned_data
+            already_complete_account = customer.is_registration_complete()
             customer: Customer = register_form.save()
-            messages.success(request, "Account created successfully.")
+            if not already_complete_account:
+                messages.success(request, "Account created successfully.")
+            else:
+                messages.success(request, "Account Updated successfully.")
+
             return redirect(
                 reverse("thank_you")
             )

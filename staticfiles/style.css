@@ -254,6 +254,10 @@ body {
 	border-left: 3px solid grey;
 	background:rgba(0, 0, 0, 0.04)
 }
+.alert-success{
+	border-left: 3px solid green;
+	background:rgba(7, 188, 52, 0.1)
+}
 
 
 
