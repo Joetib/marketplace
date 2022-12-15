@@ -2,100 +2,99 @@
 {% load static %}
 {% block title %} Registration {% endblock %}
 {% block content %}
-<div class="register-page-right">
-    <div class="site-logo-cls">
-        <img src="{% static 'svg-logo.svg' %}" class="hs-image-widget " style="width:155px;border-width:0px;border:0px;"
-            width="155" alt="svg-logo" title="svg-logo">
-    </div>
-    <div class="register-page-right-inner">
-        <div class="form-top-heading">
-            <h3>Create Account</h3>
-            <p>Get started for free!</p>
-        </div>
-        <div class="register-page-form">
-            <form method="post" action=".">
-                {% csrf_token %}
-                <div class="form-field">
-                    <input type="email" name="email" placeholder="Email*" required="required"
-                        value="{{ customer.email }}">
-                    {% if form.errors %}
-                    {% for error in form.fields.email.error_messages.values %}
-                    <div style="margin: 3px 0; padding: 5px; background:  rgba(255, 0, 0, 0.2);">
-                        <p>{{ error }}</p>
-                    </div>
-                    {% endfor %}
-                    {% endif %}
-                </div>
-                <div class="form-field">
-                    <div class="form-field-inner">
-                        <div class="form-field-half">
-                            <input type="text" name="first_name" placeholder="First Name"
-                                value="{{ customer.first_name }}">
-                            {% if form.errors %}
-                            {% for error in form.fields.first_name.error_messages.values %}
-                            <div style="margin: 3px 0; padding: 5px; background:  rgba(255, 0, 0, 0.2);">
-                                <p>{{ error }}</p>
-                            </div>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
-                        <div class="form-field-half">
-                            <input type="text" name="last_name" placeholder="Last Name" ,
-                                value="{{ customer.last_name }}">
-                            {% if form.errors %}
 
-                            {% for error in form.fields.last_name.error_messages.values %}
-                            <div style="margin: 3px 0; padding: 5px; background:  rgba(255, 0, 0, 0.2);">
-                                <p>{{ error }}</p>
-                            </div>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-field">
-                    <div class="form-field-inner">
-                        <div class="form-field-half">
-                            <input type="text" name="company_name" placeholder="Company Name"
-                                value="{{ customer.company_name }}">
-                            {% if form.errors %}
-
-                            {% for error in form.fields.company_name.error_messages.values %}
-                            <div style="margin: 3px 0; padding: 5px; background:  rgba(255, 0, 0, 0.2);">
-                                <p>{{ error }}</p>
-                            </div>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
-                        <div class="form-field-half">
-                            <input type="text" name="title" placeholder="Title" value="{{ customer.title }}">
-                            {% if form.errors %}
-
-                            {% for error in form.fields.title.error_messages.values %}
-                            <div style="margin: 3px 0; padding: 5px; background:  rgba(255, 0, 0, 0.2);">
-                                <p>{{ error }}</p>
-                            </div>
-                            {% endfor %}
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-                <div class="form-field">
-                    <input type="Number" name="phone_number" placeholder="Phone Number"
-                        value="{{ customer.phone_number }}">
-                    {% if form.errors %}
-                    {% for error in form.fields.phone_number.error_messages.values %}
-                    <div style="margin: 3px 0; padding: 5px; background:  rgba(255, 0, 0, 0.2);">
-                        <p>{{ error }}</p>
-                    </div>
-                    {% endfor %}
-                    {% endif %}
-                </div>
-                <div class="form-field">
-                    <input type="submit" class="submit-btn" value="Register for Account">
-                </div>
-            </form>
-        </div>
-    </div>
+<div class="form-top-heading">
+    <h3>Create Account</h3>
+    <p>Get started for free!</p>
 </div>
+<div class="register-page-form">
+    <form method="post" action=".">
+        {% csrf_token %}
+        <div class="form-field">
+            <input type="email" name="email" placeholder="Email*" required="required" value="{{ form.email.value }}">
+            {% if form.errors %}
+            {% for errors in form.errors.as_data.email %}
+            <div style="margin: 3px 0; padding: 5px; background:  rgba(255, 0, 0, 0.2);">
+                {% for error in errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-field">
+            <div class="form-field-inner">
+                <div class="form-field-half">
+                    <input type="text" name="first_name" placeholder="First Name" value="{{ form.first_name.value }}">
+                    {% if form.errors %}
+                    {% for errors in form.errors.as_data.first_name %}
+                    <div style="margin: 3px 0; padding: 5px; background:  rgba(255, 0, 0, 0.2);">
+                        {% for error in errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-field-half">
+                    <input type="text" name="last_name" placeholder="Last Name" , value="{{ form.last_name.value }}">
+                    {% if form.errors %}
+                    {% for errors in form.errors.as_data.last_name %}
+                    <div style="margin: 3px 0; padding: 5px; background:  rgba(255, 0, 0, 0.2);">
+                        {% for error in errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-field">
+            <div class="form-field-inner">
+                <div class="form-field-half">
+                    <input type="text" name="company_name" placeholder="Company Name"
+                        value="{{ form.company_name.value }}">
+                    {% if form.errors %}
+                    {% for errors in form.errors.as_data.company_name %}
+                    <div style="margin: 3px 0; padding: 5px; background:  rgba(255, 0, 0, 0.2);">
+                        {% for error in errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-field-half">
+                    <input type="text" name="title" placeholder="Title" value="{{ form.title.value }}">
+                    {% if form.errors %}
+                    {% for errors in form.errors.as_data.title %}
+                    <div style="margin: 3px 0; padding: 5px; background:  rgba(255, 0, 0, 0.2);">
+                        {% for error in errors %}
+                        <p>{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="form-field">
+            <input type="Number" name="phone_number" placeholder="Phone Number" value="{{ form.phone_number.value }}">
+            {% if form.errors %}
+            {% for errors in form.errors.as_data.phone_number %}
+            <div style="margin: 3px 0; padding: 5px; background:  rgba(255, 0, 0, 0.2);">
+                {% for error in errors %}
+                <p>{{ error }}</p>
+                {% endfor %}
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="form-field">
+            <input type="submit" class="submit-btn" value="Register for Account">
+        </div>
+    </form>
+</div>
+
 {% endblock content %}

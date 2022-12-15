@@ -1,11 +1,12 @@
-*{
-	margin:0px;
+* {
+	margin: 0px;
 	padding: 0px;
 	box-sizing: border-box;
 }
+
 body {
 	-webkit-font-smoothing: antialiased;
-    font-family: Inter,sans-serif!important;
+	font-family: Inter, sans-serif !important;
 
 }
 
@@ -77,27 +78,31 @@ body {
 	font-style: normal !important;
 	font-weight: 300;
 	line-height: 150% !important;
-	color: #4d5157!important;
-    font-family: Inter,sans-serif!important;
+	color: #4d5157 !important;
+	font-family: Inter, sans-serif !important;
 }
 
 .register-page-form {
 	float: left;
 	width: 100%;
 }
+
 .form-field {
-    width: 100%;
-    float: left;
-    margin-bottom: 24px;
+	width: 100%;
+	float: left;
+	margin-bottom: 24px;
 }
+
 .form-field-inner {
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
 }
+
 .form-field-half {
-    width: 48%;
+	width: 48%;
 }
+
 .register-page-form form input {
 	background: #fff !important;
 	border: 1px solid #d0d0d0 !important;
@@ -113,9 +118,11 @@ body {
 	width: 100%;
 	font-family: 'Inter', sans-serif;
 }
-.register-page-form form input:focus{
+
+.register-page-form form input:focus {
 	border: 1px solid #000 !important;
 }
+
 .register-page-form form input::-webkit-input-placeholder {
 	color: #d0d0d0 !important;
 }
@@ -168,8 +175,8 @@ body {
 	cursor: pointer;
 }
 
-.register-page-form form .actions input.hs-button:hover ,
-.register-page-form form input.submit-btn:hover{
+.register-page-form form .actions input.hs-button:hover,
+.register-page-form form input.submit-btn:hover {
 	background: #00060f !important;
 	color: #fff !important;
 }
@@ -179,44 +186,73 @@ body {
 }
 
 .thank-page {
-    background-position: 50%!important;
-    background-repeat: no-repeat!important;
-    background-size: cover!important;
-    float: left;
-    width: 100%;
+	background-position: 50% !important;
+	background-repeat: no-repeat !important;
+	background-size: cover !important;
+	float: left;
+	width: 100%;
 }
+
 .thank-page-inner {
-    margin: 0 auto;
-    max-width: 1180px;
-    padding: 0 15px;
-    width: 100%;
+	margin: 0 auto;
+	max-width: 1180px;
+	padding: 0 15px;
+	width: 100%;
 }
+
 .thank-page-content {
-    align-items: center;
-    display: flex;
-    float: left;
-    height: 91vh;
-    justify-content: center;
-    text-align: center;
-    flex-direction: column;
-    width: 100%;
+	align-items: center;
+	display: flex;
+	float: left;
+	height: 91vh;
+	justify-content: center;
+	text-align: center;
+	flex-direction: column;
+	width: 100%;
 }
+
 .thank-page-content h2 {
-    color: #00060f;
-    font-size: 64px;
-    font-weight: 600;
-    line-height: 140%;
-    margin-bottom: 30px;
-    text-align: center;
-    font-family: 'Raleway', sans-serif;
+	color: #00060f;
+	font-size: 64px;
+	font-weight: 600;
+	line-height: 140%;
+	margin-bottom: 30px;
+	text-align: center;
+	font-family: 'Raleway', sans-serif;
 }
+
 .thank-page-content p {
-    color: #4d5157;
-    font-size: 18px;
-    font-weight: 300;
-    line-height: 150%;
-    text-align: center;
-    font-family: Inter,sans-serif!important;
+	color: #4d5157;
+	font-size: 18px;
+	font-weight: 300;
+	line-height: 150%;
+	text-align: center;
+	font-family: Inter, sans-serif !important;
+}
+
+.alert {
+	padding: 10px;
+	text-align: left;
+	margin: 8px 0;
+	color:#333;
+	font-weight: 200;
+	box-sizing: 0 0 1px rgba(0,0,0,0.3);
+	border-radius: 0 5px 5px 0;
+}
+
+.alert-error {
+	border-left: 3px solid red;
+
+	background: rgba(255, 0, 0, 0.1);
+}
+.alert-warning {
+	border-left: 3px solid gold;
+
+	background: rgba(216, 216, 99, 0.1);
+}
+.alert-info{
+	border-left: 3px solid grey;
+	background:rgba(0, 0, 0, 0.04)
 }
 
 
@@ -280,9 +316,9 @@ body {
 	}
 }
 
-@media(max-width: 767px){
+@media(max-width: 767px) {
 	.thank-page-content h2 {
-	    margin-bottom: 20px;
+		margin-bottom: 20px;
 	}
 }
 
@@ -294,28 +330,35 @@ body {
 	.register-page-form form fieldset.form-columns-2 .hs-form-field:last-child {
 		margin-bottom: 0;
 	}
+
 	.form-field-inner {
-	    flex-direction: column;
+		flex-direction: column;
 	}
+
 	.form-field {
-	    margin-bottom: 15px;
+		margin-bottom: 15px;
 	}
+
 	.form-field-half {
-	    width: 100%;
-	    margin-bottom: 15px;
+		width: 100%;
+		margin-bottom: 15px;
 	}
+
 	.form-field-half:last-child {
 		margin-bottom: 0px;
 	}
+
 	.register-page-right {
-	    padding: 20px 0 40px;
+		padding: 20px 0 40px;
 	}
+
 	h2 {
-	    font-size: 48px!important;
-	    line-height: 62px!important;
+		font-size: 48px !important;
+		line-height: 62px !important;
 	}
+
 	p {
-	    font-size: 16px!important;
-	    line-height: 24px!important;
+		font-size: 16px !important;
+		line-height: 24px !important;
 	}
 }

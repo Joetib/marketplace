@@ -16,6 +16,19 @@
         <a href="https://www.edgeiq.ai/"><img src="https://www.edgeiq.ai/hubfs/svg-logo.svg" class="hs-image-widget " style="width:155px;border-width:0px;border:0px;" width="155" alt="svg-logo" title="svg-logo"></a>
     </div>
     <div class="thank-page-content">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" role="alert">
+          <span>{{ message }}</span>
+
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        {% block content %}
+        {% endblock content %}
+
+        
       	<h2>Thank you !</h2>
 		<p>An EdgeIQ representation will be in touch with you shortly.</p>
     </div>

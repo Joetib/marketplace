@@ -9,7 +9,7 @@
     rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
     rel="stylesheet">
-    <link rel="shortcut icon" href="https://www.edgeiq.ai/hubfs/EdgeIQ-Logo-Black-3.png">
+  <link rel="shortcut icon" href="https://www.edgeiq.ai/hubfs/EdgeIQ-Logo-Black-3.png">
 </head>
 
 <body>
@@ -17,14 +17,33 @@
   <div class="register-page">
     <div class="register-page-inner">
       <div class="register-page-left">
-        
+
         <img src="{% static 'Group-33610.png' %}" alt="Group-33610">
       </div>
-      {% block content %}
-      {% endblock content %}
-  </div>
-</div>
 
+      <div class="register-page-right">
+        <div class="site-logo-cls">
+          <img src="{% static 'svg-logo.svg' %}" class="hs-image-widget "
+            style="width:155px;border-width:0px;border:0px;" width="155" alt="svg-logo" title="svg-logo">
+        </div>
+        <div class="register-page-right-inner" style="text-align: center;">
+
+          {% if messages %}
+          {% for message in messages %}
+          <div class="alert alert-{{ message.tags }}" role="alert">
+            <span>{{ message }}</span>
+
+          </div>
+          {% endfor %}
+          {% endif %}
+
+          {% block content %}
+          {% endblock content %}
+
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
 
 </html>

@@ -69,6 +69,8 @@ def register_view(request: HttpRequest, customer_id: Optional[str] = None):
             )
 
         messages.error(request, "Please fix the errors in the form and try again.")
+        print("Errors : ", register_form.fields['phone_number'].error_messages)
+        print("Errors as text: ", register_form.errors.as_data())
     else:
         register_form = forms.RegisterForm(instance=customer)
     return render(
@@ -82,6 +84,7 @@ def thank_you(request: HttpRequest) -> HttpResponse:
         request,
         "account/thank_you.html",
     )
+
 
 
 @login_required
