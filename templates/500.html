@@ -1,11 +1,18 @@
 {% extends '_base.html' %}
-
-{% block title %}500 Server Error{% endblock %}
+{% load static %}
+{% block title %}500 Internal Server Error{% endblock %}
 
 {% block content %}
-<div class="container">
-
-    <h1>500 Server Error</h1>
-    <p>Looks like something went wrong!</p>
+<div class="register-page-right">
+    <div class="site-logo-cls">
+        <img src="{% static 'svg-logo.svg' %}" class="hs-image-widget " style="width:155px;border-width:0px;border:0px;"
+            width="155" alt="svg-logo" title="svg-logo">
+    </div>
+    <div class="register-page-right-inner" style="text-align: center;">
+        <div class="form-top-heading">
+            <h3 style="color: rgba(255, 0, 0, 0.7);">Internal Server Error (404)</h3>
+            <p>Sorry an error occured while processing your request. </p>
+        </div>
+    </div>
 </div>
 {% endblock content %}

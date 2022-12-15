@@ -1,11 +1,18 @@
-{% extends '_base.html' %}
+{% extends "_base.html" %}
 {% load static %}
-
-{% block title %}Home page{% endblock title %}
-
 {% block content %}
-<div class="pricing-header px-3 py-3 pt-md-5 pb-md-4 my-5 mx-auto text-center">
-  <h1 class="display-4">Welcome to EdgeIQ MarketPlace Subscription</h1>
-  <p class="lead">Subscribe and enjoy our wonderful services.</p>
+<div class="register-page-right">
+  <div class="site-logo-cls">
+    <img src="{% static 'svg-logo.svg' %}" class="hs-image-widget " style="width:155px;border-width:0px;border:0px;"
+      width="155" alt="svg-logo" title="svg-logo">
+  </div>
+  <div class="register-page-right-inner" style="text-align: center;">
+    <div class="form-top-heading">
+      <h3>Welcome to Our Subscribtion Service Platform</h3>
+      <p>Find EdgeIQ on AWS MarketPlace and subscribe.</p>
+    </div>
+
+  </div>
 </div>
+
 {% endblock content %}

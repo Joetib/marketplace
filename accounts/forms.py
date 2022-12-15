@@ -27,11 +27,5 @@ class LoginForm(forms.ModelForm):
 
 class RegisterForm(forms.ModelForm):
     class Meta:
-        model = CustomUser
-        fields = ("email", "password", "first_name", "last_name")
-
-    def save(self, *args, **kwargs):
-        email: str = self.cleaned_data["email"]
-        username = email.split("@")[0].replace(".", "_") + "_" + secrets.token_urlsafe(3)
-        self.instance.username = username
-        return super().save(*args, **kwargs)
+        model = Customer
+        fields = ("email",  "first_name", "last_name", "title", "company_name", "phone_number", )

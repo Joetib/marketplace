@@ -14,7 +14,7 @@ from accounts.models import Customer
 from django.conf import settings
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 SPREADSHEET_ID =  settings.SPREADSHEET_ID 
-SAMPLE_RANGE_NAME = 'A2:F'
+SAMPLE_RANGE_NAME = 'A2:K'
 
 
 class Command(BaseCommand):
@@ -58,26 +58,29 @@ class Command(BaseCommand):
         service = build('sheets', 'v4', credentials=creds)
         sheet = service.spreadsheets()
         data: list[list] = []
-        for customer in Customer.objects.filter(~(Q(user=None))):
+        for customer in Customer.objects.all():
             date = ''
             if customer.expiry_date:
                 date = str(customer.expiry_date)
             data.append(
                 [
                     customer.customerID,
+                    customer.email,
+                    customer.title,
+                    customer.first_name,
+                    customer.last_name,
+                    customer.phone_number,
                     customer.customer_aws_account_id,
                     customer.product_code,
                     customer.dimension,
                     float(customer.value),
                     date,
-                    customer.user.first_name,
-                    customer.user.last_name,
-                    customer.user.email,
+                    
                 ]
             )
-        sheet.values().clear(spreadsheetId=SPREADSHEET_ID, range="A2:H").execute()
+        sheet.values().clear(spreadsheetId=SPREADSHEET_ID, range="A2:K").execute()
         sheet.values().append(
-            spreadsheetId=SPREADSHEET_ID, range='A2:H', valueInputOption='USER_ENTERED', body={'values': data}
+            spreadsheetId=SPREADSHEET_ID, range='A2:K', valueInputOption='USER_ENTERED', body={'values': data}
         ).execute()
         self.stdout.write(self.style.SUCCESS("Done: Uploading spreadsheet content."))
 

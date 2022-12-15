@@ -26,7 +26,6 @@ def receive_marketplace_subscription(request: HttpRequest):
             customer_data: dict = marketplace_client.resolve_customer(
                 RegistrationToken=registration_token
             )
-            print(customer_data)
             product_code: str = customer_data["ProductCode"]
             customerID: str = customer_data["CustomerIdentifier"]
             customer_aws_account_id: str = customer_data["CustomerAWSAccountId"]
@@ -36,101 +35,52 @@ def receive_marketplace_subscription(request: HttpRequest):
                 customer_aws_account_id=customer_aws_account_id,
             )[0]
             return redirect(
-                reverse("account_login", kwargs={"customer_pk": customer.pk})
+                reverse("account_signup", kwargs={"customer_id": customer.customerID})
             )
         except Exception as e:
             messages.error(request, str(e))
+            print(e)
     messages.error(
         request, f"Account setup failed for registration token: {registration_token}"
     )
-    return redirect("account_login")
+    print("Account verification failed.")
+    return redirect("account_signup")
 
 
-def login_view(request: HttpRequest, customer_pk: Optional[int] = None):
-    if request.method == "POST":
-        login_form = forms.LoginForm(request.POST)
-        if login_form.is_valid():
-            cd = login_form.cleaned_data
-            user: Optional[CustomUser] = authenticate(
-                request, email=cd["email"], password=cd["password"]
-            )
-            if user:
-                if customer_pk:
-                    customer: Customer = get_object_or_404(Customer, pk=customer_pk)
-                    if not customer.user or customer.user == user:
-                        customer.user = user
-                        customer.save()
-                    else:
-                        messages.error(
-                            request,
-                            "The specified customerID is already associated with a different user.",
-                        )
-                        return redirect(
-                            reverse(
-                                "account_login",
-                            )
-                        )
-                user.refresh_from_db()
-
-                login(request, user)
-                return redirect("dashboard")
-            messages.error(request, "Invalid Credentials")
-        messages.error(request, "Please fix the errors in the form and try again.")
-    else:
-        login_form = forms.LoginForm()
-    return render(
-        request,
-        "account/login.html",
-        context={"form": login_form, "customer_pk": customer_pk},
-    )
 
 
-def register_view(request: HttpRequest, customer_pk: Optional[int] = None):
-    if not customer_pk:
+def register_view(request: HttpRequest, customer_id: Optional[str] = None):
+    if not customer_id:
         messages.warning(
             request, "Please use the AWS portal to begin registration process"
         )
-        return redirect("account_login")
-    customer: Customer = get_object_or_404(Customer, pk=customer_pk)
-    if customer.user:
-        messages.error(
-            request, "This customer has already been registered. Please sign in"
-        )
-        return redirect(reverse("account_login", kwargs={"customer_pk": customer.pk}))
+        return redirect("home")
+
+    customer: Customer = get_object_or_404(Customer, customerID=customer_id)
+    
     if request.method == "POST":
-        register_form = forms.RegisterForm(request.POST)
+        register_form = forms.RegisterForm(request.POST, instance=customer)
         if register_form.is_valid():
             cd = register_form.cleaned_data
-            user: CustomUser = register_form.save()
-            customer.user = user
-
-            user.set_password(cd["password"])
-            user.save()
-            customer.save()
+            customer: Customer = register_form.save()
+            messages.success(request, "Account created successfully.")
             return redirect(
-                reverse("account_login", kwargs={"customer_pk": customer.pk})
+                reverse("thank_you")
             )
 
         messages.error(request, "Please fix the errors in the form and try again.")
     else:
-        register_form = forms.RegisterForm()
+        register_form = forms.RegisterForm(instance=customer)
     return render(
         request,
         "account/signup.html",
         context={"form": register_form, "customer": customer},
     )
 
-
-@login_required
-def dashboard(request: HttpRequest) -> HttpResponse:
+def thank_you(request: HttpRequest) -> HttpResponse:
     return render(
         request,
-        "account/action.html",
-        {
-            "customer": request.user.subscriptions.first()
-            if request.user.subscriptions.count() > 0
-            else None
-        },
+        "account/thank_you.html",
     )
 
 

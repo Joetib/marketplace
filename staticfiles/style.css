@@ -1,0 +1,321 @@
+*{
+	margin:0px;
+	padding: 0px;
+	box-sizing: border-box;
+}
+body {
+	-webkit-font-smoothing: antialiased;
+    font-family: Inter,sans-serif!important;
+
+}
+
+.register-page {
+	background: #eff5f7;
+	float: left;
+	height: 100vh;
+	width: 100%;
+}
+
+.register-page-inner {
+	display: flex;
+	justify-content: space-between;
+	margin: 0 auto;
+	max-width: 1440px;
+	padding: 0 15px;
+}
+
+.register-page-left {
+	float: left;
+	width: 35%;
+}
+
+.register-page-left img {
+	height: 100vh;
+	width: 100%;
+}
+
+.register-page-right {
+	align-items: center;
+	background: #fff;
+	box-sizing: border-box;
+	display: flex;
+	flex-direction: column;
+	float: right;
+	height: 100vh;
+	justify-content: center;
+	padding: 80px;
+	width: 65%;
+}
+
+.site-logo-cls {
+	margin-bottom: 50px;
+	text-align: center;
+}
+
+.form-top-heading,
+.register-page-right-inner,
+.site-logo-cls {
+	float: left;
+	width: 100%;
+}
+
+.form-top-heading {
+	margin-bottom: 40px;
+}
+
+.form-top-heading h3 {
+	color: #00060f;
+	font-size: 32px;
+	font-weight: 600;
+	line-height: 140%;
+	margin-bottom: 16px;
+	font-family: 'Raleway', sans-serif;
+}
+
+.form-top-heading p {
+	font-size: 16px !important;
+	font-style: normal !important;
+	font-weight: 300;
+	line-height: 150% !important;
+	color: #4d5157!important;
+    font-family: Inter,sans-serif!important;
+}
+
+.register-page-form {
+	float: left;
+	width: 100%;
+}
+.form-field {
+    width: 100%;
+    float: left;
+    margin-bottom: 24px;
+}
+.form-field-inner {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+}
+.form-field-half {
+    width: 48%;
+}
+.register-page-form form input {
+	background: #fff !important;
+	border: 1px solid #d0d0d0 !important;
+	border-radius: 4px !important;
+	color: #000 !important;
+	font-size: 16px !important;
+	font-style: normal !important;
+	font-weight: 400 !important;
+	height: auto !important;
+	line-height: normal !important;
+	outline: none !important;
+	padding: 12px 16px !important;
+	width: 100%;
+	font-family: 'Inter', sans-serif;
+}
+.register-page-form form input:focus{
+	border: 1px solid #000 !important;
+}
+.register-page-form form input::-webkit-input-placeholder {
+	color: #d0d0d0 !important;
+}
+
+.register-page-form form fieldset {
+	margin-bottom: 24px !important;
+	position: relative;
+}
+
+.register-page-form form fieldset .field.hs-form-field,
+.register-page-form form fieldset .input {
+	padding-bottom: 0 !important;
+	padding-top: 0 !important;
+}
+
+.register-page-form form .hs_phone {
+	display: flex;
+	flex-direction: column-reverse;
+}
+
+.register-page-form form .hs_phone .hs-field-desc,
+.help-text {
+	color: #707a8a;
+	font-size: 12px;
+	font-style: normal;
+	font-weight: 300;
+	line-height: 150%;
+	margin-top: 5px;
+	font-family: 'Inter', sans-serif;
+}
+
+.register-page-form form fieldset .hs-error-msgs li {
+	line-height: normal !important;
+	padding: 0 !important;
+}
+
+.register-page-form form fieldset .hs-error-msgs label.hs-error-msg {
+	color: red;
+}
+
+.register-page-form form .actions input.hs-button,
+.register-page-form form input.submit-btn {
+	border: 1px solid #00060f !important;
+	border-radius: 4px !important;
+	color: #00060f !important;
+	font-weight: 600 !important;
+	margin: 10px 0 0 !important;
+	transform: none !important;
+	width: 100% !important;
+	cursor: pointer;
+}
+
+.register-page-form form .actions input.hs-button:hover ,
+.register-page-form form input.submit-btn:hover{
+	background: #00060f !important;
+	color: #fff !important;
+}
+
+.hs_error_rollup {
+	display: none !important;
+}
+
+.thank-page {
+    background-position: 50%!important;
+    background-repeat: no-repeat!important;
+    background-size: cover!important;
+    float: left;
+    width: 100%;
+}
+.thank-page-inner {
+    margin: 0 auto;
+    max-width: 1180px;
+    padding: 0 15px;
+    width: 100%;
+}
+.thank-page-content {
+    align-items: center;
+    display: flex;
+    float: left;
+    height: 91vh;
+    justify-content: center;
+    text-align: center;
+    flex-direction: column;
+    width: 100%;
+}
+.thank-page-content h2 {
+    color: #00060f;
+    font-size: 64px;
+    font-weight: 600;
+    line-height: 140%;
+    margin-bottom: 30px;
+    text-align: center;
+    font-family: 'Raleway', sans-serif;
+}
+.thank-page-content p {
+    color: #4d5157;
+    font-size: 18px;
+    font-weight: 300;
+    line-height: 150%;
+    text-align: center;
+    font-family: Inter,sans-serif!important;
+}
+
+
+
+@media(min-width:1301px) {
+	.register-page-right-inner {
+		float: none;
+		margin: 0 auto;
+		max-width: 480px;
+	}
+
+	.register-page-left img {
+		float: right;
+		width: 89%;
+	}
+}
+
+@media(max-width:1300px) {
+	.site-logo-cls {
+		margin-bottom: 20px;
+	}
+
+	.form-top-heading h3 {
+		font-size: 28px !important;
+		line-height: normal !important;
+		margin-bottom: 10px;
+	}
+
+	.form-top-heading {
+		margin-bottom: 25px;
+	}
+
+	.register-page-form form input {
+		padding: 10px 16px !important;
+	}
+
+	.register-page-form form fieldset {
+		margin-bottom: 22px !important;
+	}
+}
+
+@media(max-width:991px) {
+	.register-page-inner {
+		flex-direction: column;
+		max-width: 600px;
+	}
+
+	.register-page-left {
+		display: none;
+	}
+
+	.register-page-right {
+		height: auto;
+		padding: 40px 0;
+		width: 100%;
+	}
+
+	.register-page {
+		background: #fff;
+		height: auto;
+	}
+}
+
+@media(max-width: 767px){
+	.thank-page-content h2 {
+	    margin-bottom: 20px;
+	}
+}
+
+@media(max-width:480px) {
+	.register-page-form form fieldset.form-columns-2 .hs-form-field {
+		margin-bottom: 24px;
+	}
+
+	.register-page-form form fieldset.form-columns-2 .hs-form-field:last-child {
+		margin-bottom: 0;
+	}
+	.form-field-inner {
+	    flex-direction: column;
+	}
+	.form-field {
+	    margin-bottom: 15px;
+	}
+	.form-field-half {
+	    width: 100%;
+	    margin-bottom: 15px;
+	}
+	.form-field-half:last-child {
+		margin-bottom: 0px;
+	}
+	.register-page-right {
+	    padding: 20px 0 40px;
+	}
+	h2 {
+	    font-size: 48px!important;
+	    line-height: 62px!important;
+	}
+	p {
+	    font-size: 16px!important;
+	    line-height: 24px!important;
+	}
+}
