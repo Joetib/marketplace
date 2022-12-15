@@ -39,6 +39,16 @@ class Customer(models.Model):
 
         super().save(*args, **kwargs)
 
+    def is_registration_complete(self):
+        return (
+            self.email
+            and self.first_name
+            and self.last_name
+            and self.phone_number
+            and self.customerID
+            and self.company_name
+        )
+
 
 class Activity(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
