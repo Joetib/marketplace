@@ -16,7 +16,7 @@
     <form method="post" action=".">
         {% csrf_token %}
         <div class="form-field">
-            <input type="email" name="email" placeholder="Email*" required="required" value="{{ form.email.value }}">
+            <input type="email" name="email" placeholder="Email" required="required" value="{{ form.email.value }}">
             {% if form.errors %}
             {% for errors in form.errors.as_data.email %}
             <div style="margin: 3px 0; padding: 5px; background:  rgba(255, 0, 0, 0.2);">
