@@ -28,8 +28,8 @@ class Customer(models.Model):
     dimension = models.CharField(max_length=100, blank=True)
     value = models.DecimalField(max_digits=12, decimal_places=2, default=1)
 
-    title = models.CharField(max_length=100)
-    phone_number = models.CharField(max_length=16)
+    title = models.CharField(max_length=100, blank=True)
+    phone_number = models.CharField(max_length=16, blank=True)
     expiry_date = models.DateTimeField(blank=True, null=True)
 
     def __str__(self):
