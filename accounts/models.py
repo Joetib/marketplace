@@ -31,6 +31,9 @@ class Customer(models.Model):
     title = models.CharField(max_length=100, blank=True)
     phone_number = models.CharField(max_length=16, blank=True)
     expiry_date = models.DateTimeField(blank=True, null=True)
+    date_created = models.DateTimeField(auto_now_add=True)
+    class Meta:
+        ordering = ("date_created",)
 
     def __str__(self):
         return f"Customer: {self.customerID}"
