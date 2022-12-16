@@ -19,4 +19,5 @@ env/
 venv/*
 env/*
 credentials.json
+credentials_2.json
 token.json
