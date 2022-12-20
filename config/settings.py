@@ -15,6 +15,7 @@ env = environ.Env(
     MEDIA_ROOT=(str, str(BASE_DIR.joinpath("media"))),
     STATIC_ROOT=(str, str(BASE_DIR.joinpath("static"))),
     USE_POSTGRES=(bool, False),
+    USE_SMTP_EMAIL=(bool, True),
     CSRF_TRUSTED_ORIGINS=(
         list,
         [
@@ -185,7 +186,7 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-if bool(env("USE_SMTP_EMAIL", True)):
+if bool(env("USE_SMTP_EMAIL")):
     EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 else:
     EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
