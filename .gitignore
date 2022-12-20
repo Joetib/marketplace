@@ -13,7 +13,8 @@ db.sqlite3
 .env
 media
 media/*
-
+file.txt
+cron_log.txt
 venv/
 env/
 venv/*

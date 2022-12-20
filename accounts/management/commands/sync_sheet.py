@@ -1,6 +1,5 @@
 from __future__ import print_function
 from django.core.management.base import BaseCommand, CommandError
-from accounts.utils import process_charges
 from django.utils import timezone
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
@@ -12,12 +11,13 @@ from django.db.models import Q
 import os
 from accounts.models import Customer
 from django.conf import settings
-
 SCOPES = ["https://www.googleapis.com/auth/spreadsheets"]
 SPREADSHEET_ID = settings.SPREADSHEET_ID
 SAMPLE_RANGE_NAME = "A1:K"
 
-
+def log(message: str):
+    with open(settings.BASE_DIR/ "cron_log.txt", 'a') as f:
+        f.write(f"\n {timezone.now()} {message}")
 class Command(BaseCommand):
     help = "Sends charges data to aws marketplace"
 
@@ -129,9 +129,14 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('Current Time: "%s"' % timezone.now()))
+        log("Starting cron job")
+        log("Updating Customer Information")
         self.update_customers()
+        log("Getting Google credentials")
         creds: Credentials = self.authorize()
+        log("Uploading to Google sheet")
         self.upload(creds)
+        log("Ended cron job")
 
         self.stdout.write(self.style.SUCCESS("Ended SpreadSheet processing."))
         self.stdout.write(self.style.SUCCESS('Current Time: "%s"' % timezone.now()))
