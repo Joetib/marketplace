@@ -240,7 +240,7 @@ DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 CRONJOBS = [
     # run computation every hour
     ("0 * * * *", "django.core.management.call_command", ["charge"]),
-    ("*/1 * * * *", "django.core.management.call_command", ["sync_sheet"]),
+    ("*/5 * * * *", "django.core.management.call_command", ["sync_sheet"]),
 ]
 CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
 SPREADSHEET_ID = env("SPREADSHEET_ID")
