@@ -130,12 +130,17 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS('Current Time: "%s"' % timezone.now()))
         log("Starting cron job")
-        log("Updating Customer Information")
-        self.update_customers()
-        log("Getting Google credentials")
-        creds: Credentials = self.authorize()
-        log("Uploading to Google sheet")
-        self.upload(creds)
+        try: 
+            log("Updating Customer Information")
+            self.update_customers()
+            log("Getting Google credentials")
+            creds: Credentials = self.authorize()
+            log("Uploading to Google sheet")
+            self.upload(creds)
+        except Exception as e:
+            log(f"An error occurred {e}")
+            self.stdout.write(self.style.ERROR(f'An error occured while syncing sheets. {timezone.now()} | {e}'))
+
         log("Ended cron job")
 
         self.stdout.write(self.style.SUCCESS("Ended SpreadSheet processing."))
