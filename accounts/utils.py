@@ -34,6 +34,7 @@ def get_entitlement(customer: Customer) -> list[dict]:
             "MaxResults": 25,
         }
     )
+    print(entitlement)
     entitlements = entitlement.get("Entitlements", [])
     return entitlements
 
