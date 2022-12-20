@@ -9,6 +9,7 @@ import time
 
 def update_customer_entitlement(customer: Customer):
     entitlements = get_entitlement(customer)
+    print(entitlements)
     if len(entitlements)== 0:
         customer.value = 0
         customer.dimension = ''

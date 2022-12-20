@@ -15,7 +15,13 @@ env = environ.Env(
     MEDIA_ROOT=(str, str(BASE_DIR.joinpath("media"))),
     STATIC_ROOT=(str, str(BASE_DIR.joinpath("static"))),
     USE_POSTGRES=(bool, False),
-    CSRF_TRUSTED_ORIGINS=(list, ['http://*.127.0.0.1','http://*.127.0.0.1',])
+    CSRF_TRUSTED_ORIGINS=(
+        list,
+        [
+            "http://*.127.0.0.1",
+            "http://*.127.0.0.1",
+        ],
+    ),
 )
 
 try:
@@ -112,7 +118,7 @@ if env("USE_POSTGRES"):
             "PASSWORD": env("DB_PASSWORD"),
             "HOST": env("DB_HOST"),
             "PORT": env("DB_PORT"),
-            'CONN_MAX_AGE': 500,
+            "CONN_MAX_AGE": 500,
         }
     }
 else:
@@ -179,7 +185,18 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 # EMAIL
 # ------------------------------------------------------------------------------
 # https://docs.djangoproject.com/en/dev/ref/settings/#email-backend
-EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+if bool(env("USE_SMTP_EMAIL", True)):
+    EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+else:
+    EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+EMAIL_USE_TLS = True
+EMAIL_HOST = env("EMAIL_HOST")
+EMAIL_PORT = 587
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
+DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
+DEFAULT_TO_EMAIL = EMAIL_HOST_USER
+
 
 # DJANGO-DEBUG-TOOLBAR CONFIGS
 # ------------------------------------------------------------------------------
@@ -221,8 +238,8 @@ DATETIME_FORMAT = "%Y-%m-%d %H:%M:%S"
 
 CRONJOBS = [
     # run computation every hour
-    ("0 * * * *", 'django.core.management.call_command', ['charge']),
-    ("*/1 * * * *", 'django.core.management.call_command', ['sync_sheet']),
+    ("0 * * * *", "django.core.management.call_command", ["charge"]),
+    ("*/1 * * * *", "django.core.management.call_command", ["sync_sheet"]),
 ]
-CSRF_TRUSTED_ORIGINS = env('CSRF_TRUSTED_ORIGINS') 
-SPREADSHEET_ID = env('SPREADSHEET_ID')
+CSRF_TRUSTED_ORIGINS = env("CSRF_TRUSTED_ORIGINS")
+SPREADSHEET_ID = env("SPREADSHEET_ID")
