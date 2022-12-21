@@ -49,7 +49,6 @@ class Customer(models.Model):
                 self.email
                 and self.first_name
                 and self.last_name
-                and self.customerID
                 and self.company_name
             ).strip()
         )

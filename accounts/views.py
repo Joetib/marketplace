@@ -85,11 +85,11 @@ def register_view(request: HttpRequest, customer_id: Optional[str] = None):
 
     customer: Customer = get_object_or_404(Customer, customerID=customer_id)
     
+    already_complete_account = customer.is_registration_complete()
     if request.method == "POST":
         register_form = forms.RegisterForm(request.POST, instance=customer)
         if register_form.is_valid():
             cd = register_form.cleaned_data
-            already_complete_account = customer.is_registration_complete()
             customer: Customer = register_form.save()
             if not already_complete_account:
                 messages.success(request, "Account created successfully.")
