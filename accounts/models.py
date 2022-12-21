@@ -32,6 +32,7 @@ class Customer(models.Model):
     phone_number = models.CharField(max_length=16, blank=True)
     expiry_date = models.DateTimeField(blank=True, null=True)
     date_created = models.DateTimeField(auto_now_add=True)
+
     class Meta:
         ordering = ("date_created",)
 
@@ -43,13 +44,14 @@ class Customer(models.Model):
         super().save(*args, **kwargs)
 
     def is_registration_complete(self):
-        return (
-            self.email
-            and self.first_name
-            and self.last_name
-            and self.phone_number
-            and self.customerID
-            and self.company_name
+        return bool(
+            (
+                self.email
+                and self.first_name
+                and self.last_name
+                and self.customerID
+                and self.company_name
+            ).strip()
         )
 
 

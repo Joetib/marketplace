@@ -36,7 +36,7 @@ def send_customer_registration_email(customer: Customer, new_registered=True):
         You may see further details about their registration in the google sheet at {sheet_url}.
         """
     send_mail(
-        subject=f"{customer.first_name} has {subscription_clause} to EdgeIQ from Marketplace.",
+        subject=f"AWS Marketplace Subscription.",
         message=message,
         from_email=settings.DEFAULT_FROM_EMAIL,
         recipient_list=settings.DEFAULT_TO_EMAILS,
@@ -92,11 +92,11 @@ def register_view(request: HttpRequest, customer_id: Optional[str] = None):
             already_complete_account = customer.is_registration_complete()
             customer: Customer = register_form.save()
             if not already_complete_account:
-                messages.success(request, "Account created successfully.")
-                send_customer_registration_email(customer=customer, new_registered=True)
-            else:
                 messages.success(request, "Account Updated successfully.")
                 send_customer_registration_email(customer=customer, new_registered=False)
+            else:
+                messages.success(request, "Account created successfully.")
+                send_customer_registration_email(customer=customer, new_registered=True)
 
             return redirect(
                 reverse("thank_you")
