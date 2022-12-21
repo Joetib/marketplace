@@ -11,18 +11,26 @@ from .models import CustomUser, Customer, Activity
 from django.contrib import messages
 from . import forms
 from django.views.decorators.csrf import csrf_exempt
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
+
 # Create your views here.
+
 
 def send_customer_registration_email(customer: Customer, new_registered=True):
     """Send an email to the administrator on the regitration of a customer
 
-    new_registered: denotes whether this is a new account registration or an update to 
+    new_registered: denotes whether this is a new account registration or an update to
         an existing account registration
-    
+
     """
-    subscription_clause = "subscribed" if new_registered else "updated their subscription"
-    registration_clause = "A new client has registered" if new_registered else f"{customer.first_name} has updated their registration details"
+    subscription_clause = (
+        "subscribed" if new_registered else "updated their subscription"
+    )
+    registration_clause = (
+        "A new client has registered"
+        if new_registered
+        else f"{customer.first_name} has updated their registration details"
+    )
     sheet_url = f"https://docs.google.com/spreadsheets/d/{settings.SPREADSHEET_ID}/"
     message = f"""
         {registration_clause} for EdgeIQ services
@@ -35,12 +43,22 @@ def send_customer_registration_email(customer: Customer, new_registered=True):
 
         You may see further details about their registration in the google sheet at {sheet_url}.
         """
-    send_mail(
-        subject=f"AWS Marketplace Subscription.",
-        message=message,
+    # send_mail(
+    #     subject=f"AWS Marketplace Subscription.",
+    #     message=message,
+    #     from_email=settings.DEFAULT_FROM_EMAIL,
+    #     recipient_list=settings.DEFAULT_TO_EMAILS,
+
+    # )
+    email = EmailMessage(
+        subject=f"AWS Marketplace Subscription",
+        body=message,
         from_email=settings.DEFAULT_FROM_EMAIL,
-        recipient_list=settings.DEFAULT_TO_EMAILS,
+        to=settings.DEFAULT_TO_EMAILS,
+        cc=settings.DEFAULT_CC_EMAILS,
     )
+    email.send(fail_silently=True)
+
 
 @csrf_exempt
 def receive_marketplace_subscription(request: HttpRequest):
@@ -74,8 +92,6 @@ def receive_marketplace_subscription(request: HttpRequest):
     return redirect("account_signup")
 
 
-
-
 def register_view(request: HttpRequest, customer_id: Optional[str] = None):
     if not customer_id:
         messages.warning(
@@ -84,7 +100,7 @@ def register_view(request: HttpRequest, customer_id: Optional[str] = None):
         return redirect("home")
 
     customer: Customer = get_object_or_404(Customer, customerID=customer_id)
-    
+
     already_complete_account = customer.is_registration_complete()
     if request.method == "POST":
         register_form = forms.RegisterForm(request.POST, instance=customer)
@@ -96,14 +112,14 @@ def register_view(request: HttpRequest, customer_id: Optional[str] = None):
                 send_customer_registration_email(customer=customer, new_registered=True)
             else:
                 messages.success(request, "Account Updated successfully.")
-                send_customer_registration_email(customer=customer, new_registered=False)
+                send_customer_registration_email(
+                    customer=customer, new_registered=False
+                )
 
-            return redirect(
-                reverse("thank_you")
-            )
+            return redirect(reverse("thank_you"))
 
         messages.error(request, "Please fix the errors in the form and try again.")
-        print("Errors : ", register_form.fields['phone_number'].error_messages)
+        print("Errors : ", register_form.fields["phone_number"].error_messages)
         print("Errors as text: ", register_form.errors.as_data())
     else:
         register_form = forms.RegisterForm(instance=customer)
@@ -113,12 +129,12 @@ def register_view(request: HttpRequest, customer_id: Optional[str] = None):
         context={"form": register_form, "customer": customer},
     )
 
+
 def thank_you(request: HttpRequest) -> HttpResponse:
     return render(
         request,
         "account/thank_you.html",
     )
-
 
 
 @login_required

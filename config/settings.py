@@ -17,6 +17,7 @@ env = environ.Env(
     USE_POSTGRES=(bool, False),
     USE_SMTP_EMAIL=(bool, True),
     DEFAULT_TO_EMAILS = (list,),
+    DEFAULT_CC_EMAILS = (list,),
     CSRF_TRUSTED_ORIGINS=(
         list,
         [
@@ -199,7 +200,7 @@ EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 DEFAULT_FROM_EMAIL = env("DEFAULT_FROM_EMAIL")
 DEFAULT_TO_EMAIL = EMAIL_HOST_USER
 DEFAULT_TO_EMAILS = env.list("DEFAULT_TO_EMAILS")
-
+DEFAULT_CC_EMAILS = env.list("DEFAULT_CC_EMAILS")
 
 # DJANGO-DEBUG-TOOLBAR CONFIGS
 # ------------------------------------------------------------------------------
